@@ -8,6 +8,21 @@
 #include "GameFramework/Actor.h"
 #include "RegisterHttp.generated.h"
 
+USTRUCT()
+struct FRequest_Register {
+	GENERATED_BODY()
+		UPROPERTY() FString username;
+	UPROPERTY() FString password;
+	UPROPERTY() FString email;
+	UPROPERTY() FString name;
+	UPROPERTY() FString surname;
+	UPROPERTY() FString country;
+	UPROPERTY() FString city;
+	UPROPERTY() FString birthdate;
+
+	FRequest_Register() {}
+};
+
 UCLASS()
 class TCOZ_API ARegisterHttp : public AActor
 {
@@ -24,8 +39,11 @@ public:
 		void RegistrarUsuario(FString username, FString password, FString cpassword, FString email, FString name, FString surname, FString country, FString city, FString birthdate);
 
 	void OnResponesReceived(FHttpRequestPtr request, FHttpResponsePtr response, bool bWasSuccessfull);
+	void GetJsonStringFromStruct(FRequest_Register FilledStruct, FString& StringOutput);
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool value;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FString error;
 
 protected:

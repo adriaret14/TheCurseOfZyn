@@ -14,10 +14,26 @@ ARegisterHttp::ARegisterHttp()
 void ARegisterHttp::RegistrarUsuario(FString username, FString password, FString cpassword, FString email, FString name, FString surname, FString country, FString city, FString birthdate)
 {
 	http = &FHttpModule::Get();
+	FRequest_Register data;
+	data.username = username;
+	data.password = password;
+	data.email = email;
+	data.name = name;
+	data.surname = surname;
+	data.country = country;
+	data.city = city;
+	data.birthdate = birthdate;
+
+
+	FString ContentJsonString;
+	GetJsonStringFromStruct(data, ContentJsonString);
+
 	TSharedRef<IHttpRequest> Request = http->CreateRequest();
 	Request->OnProcessRequestComplete().BindUObject(this, &ARegisterHttp::OnResponesReceived);
 	Request->SetURL("http://thecurseofzyn.x10host.com/GAME/prueba.php");
-	Request->SetVerb("GET");
+	Request->SetVerb("POST");
+	Request->SetContentAsString(ContentJsonString);
+	//Request->SetContent(data);
 	Request->SetHeader(TEXT("User-Agent"), "X-UnrealEngine-Agent");
 	Request->SetHeader("Content-Type", TEXT("application/json"));
 	Request->ProcessRequest();
@@ -28,19 +44,25 @@ void ARegisterHttp::OnResponesReceived(FHttpRequestPtr request, FHttpResponsePtr
 	TSharedPtr<FJsonObject> JsonObject;
 	TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(response->GetContentAsString());
 	if (FJsonSerializer::Deserialize(Reader, JsonObject)) {
-		 int32 recievedInt = JsonObject->GetIntegerField("customInt");
+		 //int32 recievedInt = JsonObject->GetIntegerField("username");
+		FString receivedString = JsonObject->GetStringField("username");
+		error = receivedString;
 		 //GEngine->AddOnScreenDebugMessage(1, 2.0f, FColor::Green, FString::FromInt(recievedInt));
-		 if (recievedInt == 1)
+		 /*if (recievedInt == 1)
 		 {
 			 value = true;
-		}
+		 }
 		 else
 		 {
 			 value = false;
-			 error="You may not have Internet Connection"
-			 }
-		 }
+			 error = "You may not have Internet Connection";
+		 }*/
 	}
+}
+
+void ARegisterHttp::GetJsonStringFromStruct(FRequest_Register FilledStruct, FString & StringOutput)
+{
+	FJsonObjectConverter::UStructToJsonObjectString(FRequest_Register::StaticStruct(), &FilledStruct, StringOutput, 0, 0);
 }
 
 
