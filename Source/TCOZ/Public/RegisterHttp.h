@@ -40,11 +40,30 @@ public:
 
 	void OnResponesReceived(FHttpRequestPtr request, FHttpResponsePtr response, bool bWasSuccessfull);
 	void GetJsonStringFromStruct(FRequest_Register FilledStruct, FString& StringOutput);
+	bool CheckInputs(FString username, FString password, FString cpassword, FString email, FString name, FString surname, FString Country, FString city, FString birthday);
+	UFUNCTION(BluePrintCallable)
+	void CheckUsername(FString username);
+	UFUNCTION(BluePrintCallable)
+	void CheckEmail(FString email);
+	UFUNCTION(BluePrintCallable)
+	void CheckPassword(FString password, FString cpassword);
+	void OnResponesReceivedCU(FHttpRequestPtr request, FHttpResponsePtr response, bool bWasSuccessfull);
+	void OnResponesReceivedCE(FHttpRequestPtr request, FHttpResponsePtr response, bool bWasSuccessfull);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool value;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FString error;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int32 code;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool flag;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool flagUsername;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool flagPassword;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool flagEmail;
 
 protected:
 	// Called when the game starts or when spawned
