@@ -51,6 +51,15 @@ void ARegisterHttp::OnResponesReceived(FHttpRequestPtr request, FHttpResponsePtr
 		//int32 recievedInt = JsonObject->GetIntegerField("resp");
 		//code = recievedInt;
 		FString receivedString = JsonObject->GetStringField("resp");
+		if (receivedString == "OK")
+		{
+			flag = true;
+		}
+		else
+		{
+			flag = false;
+			error = "R0";
+		}
 		
 	}
 }
