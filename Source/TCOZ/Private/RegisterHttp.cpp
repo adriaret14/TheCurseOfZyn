@@ -211,7 +211,7 @@ void ARegisterHttp::CheckEmail(FString email)
 	GetJsonStringFromStruct(data, ContentJsonString);
 
 	TSharedRef<IHttpRequest> Request = http->CreateRequest();
-	Request->OnProcessRequestComplete().BindUObject(this, &ARegisterHttp::OnResponesReceivedCU);
+	Request->OnProcessRequestComplete().BindUObject(this, &ARegisterHttp::OnResponesReceivedCE);
 	Request->SetURL("http://thecurseofzyn.x10host.com/GAME/checkEmail.php");
 	Request->SetVerb("POST");
 	Request->SetContentAsString(ContentJsonString);
